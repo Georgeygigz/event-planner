@@ -1,0 +1,50 @@
+.ant-form-item-label {
+  overflow: visible;
+}
+
+/* SIDEBAR WORD SELECTION STYLE */
+
+.word-selection {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+.substring-wrapper {
+  width: 100%;
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+}
+.word-selection-form {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+.sidebar {
+  height: 1000px;
+  margin-right: 24px;
+}
+.content {
+  padding: 1rem;
+}
+
+.sub-string-content {
+  width: 60%;
+  padding: 10px;
+}
+.words-input{
+  display: flex;
+  flex-direction: row;
+}
+
+/* NAVBAR */
+.navbar {
+  background-color: #1890FF;
+  padding-left: 2rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.nav-title h2 {
+  /* color: #fff; */
+}

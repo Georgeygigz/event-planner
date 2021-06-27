@@ -1,40 +1,70 @@
-## An example of running asynchronous task using celery
+# Getting Started with Create React App
 
-### Requirements
- - [Python](https://www.python.org/)
- - [Celery](https://docs.celeryproject.org/en/latest/getting-started/first-steps-with-celery.html)
- - [Redis](https://redis.io/)
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-### Setup the app locally
-- `git clone https://github.com/Georgeygigz/notify-me`
-- to activate the virtual environment `pipenv shell`
-- to install dependencies `pipenv install`
+## Available Scripts
 
+In the project directory, you can run:
 
-### Introduction
-- This is a simple representation of how to run asynchronous tasks using celery and redis blocker
-- Asynchronous implementation are used in many real life application ranging from(Email notification apps,
-    calling external api and so on)
-- In this example I have implemented a simple app where we have a function that is simulating a task
-  that takes 20 seconds to execute to completion.
+### `yarn start`
 
-- I have compared two app `synchronous_task` which is running `synchronously` and `task` which runs `asynchronously`
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-- If you run `synchronous_task.py` using this command `python synchronous_task.py` you will notice that
-  this line is printed on the terminal `The begining!`, then after twenty seconds elaps, this line is printed  `... the end of app execution`. This means that we had to wait for 20 second in order to get the response  after a task in our program was executed.
+The page will reload if you make edits.\
+You will also see any lint errors in the console.
 
-- To solve the above problem, we have used Celery and Redis to ques our task and execute that task that
-  is taking too long asynchronously.
+### `yarn test`
 
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### Run the asynchronous task
-- `celery -A task worker -l info`
-- You will notice  these two lines below, are executed almost the same time
+### `yarn build`
 
- ``` The begining!```
-  ``` ... the end of app execution```
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-- Finally you will realize that after 20 seconds the task is being executed
-```[2020-01-17 22:09:09,294: INFO/ForkPoolWorker-6] Task task.sleep_asynchronously[e683d854-65ad-4a61-a824-13c2a2c58ac0] succeeded in 20.022739520005416s:```
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
+### `yarn eject`
+
+**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+
+If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+
+You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+
+## Learn More
+
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+
+To learn React, check out the [React documentation](https://reactjs.org/).
+
+### Code Splitting
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+
+### Analyzing the Bundle Size
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+
+### Making a Progressive Web App
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+
+### Advanced Configuration
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+
+### Deployment
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+
+### `yarn build` fails to minify
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
