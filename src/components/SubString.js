@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Layout, Form, Select, Input, Button } from "antd";
 import NavBar from "./NavBar";
 import SideBar from "./SideBar";
+import api from "../api"
 
 const SubString = () => {
   const [form] = Form.useForm();
@@ -15,11 +16,35 @@ const SubString = () => {
   const [chars, setChar] = useState(["M", "A", "N"]);
   const [subString, setSubString] = useState("");
 
+
+  useEffect (()=>{
+    getWords()
+  })
+
+  const getWords =()=>{
+    api.get('/').then((res)=>{
+      console.log("res>>>>>>>>>>>>", res.data)
+      setWords(res.data.words)
+    }).catch((err)=>{
+      console.log("res>>>>>>>>>>>>", err)
+    })
+  }
+
+  const saveWord = (word) =>{
+    api.post('/saveword', {"word":word})
+    .then((res)=>{
+      console.log("res>>>>>>>>>>>>", res.data)
+    }).catch((err)=>{
+      console.log("res>>>>>>>>>>>>", err)
+    })
+  }
+
+
+
+
   const onCharClick = (value) => {
     const chars = subString + value.target.id;
     setSubString(chars);
-    console.log(chars);
-    console.log(">>>>>>>>>>>>>>>", value.target);
   };
 
   let wordChars = chars.map((char) => (
@@ -37,6 +62,8 @@ const SubString = () => {
   const addWords = () => {
     const word = form.getFieldValue("word");
     setWords((prevItems) => [...prevItems, word]);
+
+    saveWord(word)
     form.resetFields();
   };
 
