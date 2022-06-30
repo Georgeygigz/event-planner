@@ -10,7 +10,7 @@
   flex-wrap: wrap;
 }
 .substring-wrapper {
-  width: 100%;
+  width: 90%;
   margin: 10px;
   display: flex;
   flex-direction: column;
@@ -23,9 +23,6 @@
 .sidebar {
   height: 1000px;
   margin-right: 24px;
-}
-.content {
-  padding: 1rem;
 }
 
 .sub-string-content {
@@ -45,6 +42,6 @@
   padding-bottom: 1rem;
 }
 
-.nav-title h2 {
-  /* color: #fff; */
+.header-text {
+  color: #fff;
 }
