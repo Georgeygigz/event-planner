@@ -1,31 +1,48 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Layout, Form, Select, Input, Button, Row, Col, Divider } from "antd";
+import { Layout, Form, Select, Input, Button, Row, Col } from "antd";
 import NavBar from "./NavBar";
 import SideBar from "./SideBar";
 import api from "../api";
 
 const SubString = () => {
   const [form] = Form.useForm();
+  const [isDone, setIsDone] = useState(false);
   const [words, setWords] = useState([
-    "MAN",
-    "WOMAN",
-    "HELLO",
     "INFORMATION",
-    "LAPTOP",
+    "KITCHEN",
+    "BACKGROUND",
+    "ATMOSPHERE"
   ]);
-  const [wordSolutions, setWordSolutions] = useState([
-    "IN",
-    "FOR",
-    "INFO",
-    "FORM",
-    "OR",
-    "ON",
-    "FORMAT",
-    "INFORM",
-    "AT",
-    "MAT",
-    "ION",
-  ]);
+  const [wordSolutions, setWordSolutions] = useState([]);
+  const [solutionObj, setSolutionObj] = useState({
+    INFORMATION: [
+      "IN",
+      "FOR",
+      "INFO",
+      "FORM",
+      "OR",
+      "ON",
+      "FORMAT",
+      "INFORM",
+      "AT",
+      "MAT",
+      "ION",
+    ],
+    KITCHEN: [
+      "KIT","IT","ITCH","HEN","HE"
+    ],
+    BACKGROUND: [
+      "BACK","GROUND","ROUND"
+    ],
+    ATMOSPHERE: [
+      "SPHERE","HERE","HER","AT"
+    ],
+    DICTIONARY: [
+      "DICTION","ION","ON"
+    ],
+  });
+  const [questionNo, setQuestionNo] = useState(0);
+  const [totalScore, setTotalScore] = useState(0);
   const [scoreList, setScoreList] = useState([]);
   const [chars, setChar] = useState(["M", "A", "N"]);
   const [selectedWord, setSelectedWord] = useState([]);
@@ -35,7 +52,7 @@ const SubString = () => {
   const [subString, setSubString] = useState("");
 
   useEffect(() => {
-    let arrSplit = words[3].split("");
+    let arrSplit = words[0].split("");
     arrSplit = arrSplit.map((char, idx) => {
       return {
         char: char,
@@ -44,7 +61,10 @@ const SubString = () => {
       };
     });
     setChar(arrSplit);
-  }, [words]);
+    setQuestionNo(1);;
+    setWordSolutions(solutionObj[words[0]])
+    setTotalScore(solutionObj[words[0]].length)
+  }, []);
 
   const getWords = () => {
     api
@@ -69,9 +89,40 @@ const SubString = () => {
       });
   };
 
-  const handleDone = () => {
-
+  const handleNextWord = () => {
+    setIsDone(false);
+    let arrayScores = localStorage.getItem('scores') || [];
+    console.log('arrayScores', arrayScores)
+    let payload = {
+      question: questionNo,
+      score: selectedWord.length,
+      total: totalScore
+    }
+    arrayScores = [
+      ...arrayScores,
+      payload
+    ]
+    localStorage.setItem('scores', arrayScores)
+    let arrSplit = words[questionNo].split("");
+    arrSplit = arrSplit.map((char, idx) => {
+      return {
+        char: char,
+        picked: false,
+        id: idx,
+      };
+    });
+    setChar(arrSplit);
+    setQuestionNo((questionNo+1));;
+    setWordSolutions(solutionObj[words[questionNo]])
+    setScoreList([]);
+    setTotalScore(solutionObj[words[questionNo]].length)
   }
+
+  const handleDone = () => {
+    setIsDone(true);
+    setIsSuccess(false);
+  }
+
   const onCharClick = (char, idx) => {
     let selectIdx = idx;
     let arr = chars;
@@ -156,8 +207,18 @@ const SubString = () => {
   };
 
   const renderCharacters = (word) => {
-    const splittedWord = word.split("");
-    setChar(splittedWord);
+    let arrSplit = word.split("");
+    arrSplit = arrSplit.map((char, idx) => {
+      return {
+        char: char,
+        picked: false,
+        id: idx,
+      };
+    });
+    setChar(arrSplit);
+    setWordSolutions(solutionObj[word])
+    setTotalScore(solutionObj[word].length)
+    // setChar(splittedWord);
     console.log(word.split(""));
   };
 
@@ -236,10 +297,12 @@ const SubString = () => {
               sm={{ span: 6, offset: 0 }}
               style={{
                 display: "flex",
-                flexDirection: "row",
+                flexDirection: 'column',
+                alignItems: 'start',
               }}
             >
-              <h2>Score: {scoreList.length} /{wordSolutions.length}</h2>
+              <h2>Q {questionNo}</h2>
+              <h3>Score: {scoreList.length} /{totalScore}</h3>
             </Col>
             <Col
               xs={{ span: 18 }}
@@ -247,7 +310,7 @@ const SubString = () => {
               md={{ span: 12, offset: 0 }}
             >
               <Row justify="start">
-              {selectedWord &&
+              {(selectedWord || !isDone) &&
               selectedWord.map((char, idx) => (
                 <Col
                   xs={{ span: 2 }}
@@ -298,7 +361,7 @@ const SubString = () => {
           </Row>
           <Row justify="start" wrap>
             {/* {wordChars} */}
-              {chars.map((char, idx) =>
+              {!isDone && chars.map((char, idx) =>
                 char.picked ? (
                   <Col
                     xs={{ span: 2 }}
@@ -341,6 +404,8 @@ const SubString = () => {
                 )
               )}
           </Row>
+
+          {/* Clear and submit buttons row */}
           <Row>
             <Col
                xs={{ span: 6, offset: 0 }}
@@ -384,35 +449,13 @@ const SubString = () => {
               )}
             </Col>
           </Row>
-          <Row justify="start" align="start" wrap={true}>
-            {/* <Col
-              xs={{ span: 24 }}
-              sm={{ span: 24 }}
-              md={{ span: 14, offset: 0 }}
-              style={{
-                display: "flex",
-                flexDirection: "row",
-              }}
-            >
-              {selectedWord &&
-                selectedWord.map((char, idx) => (
-                  <div
-                    key={idx}
-                    style={{
-                      backgroundColor: "#000",
-                      color: "red",
-                      margin: "1rem .1rem",
-                      padding: "0.8rem",
-                      borderRadius: "6px",
-                      cursor: "pointer",
-                    }}
-                    onClick={() => onCharClick(char, idx)}
-                  >
-                    {char.char}
-                  </div>
-                ))}
-            </Col> */}
-          </Row>
+          <Row justify="start">
+         {(scoreList.length > 0) && <span className="" style={{
+            fontSize: '0.8rem',
+            marginTop: '2rem',
+            fontWeight: 500
+          }}>SUBMITTED WORDS</span>}
+         </Row>
           <Row justify="start" wrap={true}>
             <Col
               xs={{ span: 24 }}
@@ -441,9 +484,47 @@ const SubString = () => {
                     {char.char}
                   </div>
                 ))}
-            </Col>
-            
+            </Col> 
           </Row>
+         <Row>
+         {(isDone && wordSolutions.length > 0) && <span className="" style={{
+            fontSize: '0.8rem',
+            fontWeight: 500,
+            marginTop: '2rem',
+          }}>REMAINING WORDS</span>}
+         </Row>
+          {isDone &&
+            <Row justify="start" wrap={true}>
+              
+            <Col
+              xs={{ span: 24 }}
+              sm={{ span: 24 }}
+              md={{ span: 14, offset: 0 }}
+              style={{
+                display: "flex",
+                flexDirection: "row",
+              }}
+            >
+               {wordSolutions &&
+                wordSolutions.map((char, idx) => (
+                  <div
+                    key={idx}
+                    style={{
+                      backgroundColor: "cyan",
+                      color: "black",
+                      fontWeight: 'bolder',
+                      margin: "1rem .1rem",
+                      padding: "0.8rem",
+                      borderRadius: "6px",
+                      cursor: "pointer",
+                    }}
+                    onClick={() => onCharClick(char, idx)}
+                  >
+                    {char}
+                  </div>
+                ))}
+              </Col></Row>
+          }
           <Row>
           <Col
                xs={{ span: 6 }}
@@ -454,7 +535,7 @@ const SubString = () => {
                 alignItems: "center",
               }}
             >
-              {scoreList.length > 0 && (
+              {(scoreList.length > 0 && !isDone) && (
                 <Button
                   block
                   size="large"
@@ -462,6 +543,16 @@ const SubString = () => {
                   onClick={() => handleDone()}
                 >
                   Done
+                </Button>
+              )}
+               {(scoreList.length > 0 && isDone) && (
+                <Button
+                  block
+                  size="large"
+                  type="primary"
+                  onClick={() => handleNextWord()}
+                >
+                  Next Word
                 </Button>
               )}
             </Col>
