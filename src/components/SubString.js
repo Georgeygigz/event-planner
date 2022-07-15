@@ -250,7 +250,7 @@ const SubString = () => {
         name="word-selection"
       >
         <div className="substring-wrapper">
-          <Form.Item
+          {/* <Form.Item
             name="word"
             label="Enter Word"
             className="word-selection-form"
@@ -262,7 +262,7 @@ const SubString = () => {
                 Add
               </Button>
             </div>
-          </Form.Item>
+          </Form.Item> */}
           <Form.Item
             name="words"
             label="Select Word"

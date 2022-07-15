@@ -20,24 +20,6 @@ const LoginForm = ({ setSignedIn }) => {
     navigate('/', { replace: true })
   };
 
-  // useEffect(() => {
-  //   if (loginState.status === "fetched") {
-  //     console.log("fetched", loginState.data);
-  //     localStorage.setItem("token", loginState.data);
-  //     toast.success("You have successfully logged in!");
-  //     setTimeout(() => {
-  //       navigate("/", { replace: true });
-  //     }, 800);
-  //   } else if (loginState.status === "fetching") {
-  //     console.log("fetching", loginState.data);
-  //   } else if (loginState.status === "idle") {
-  //     console.log("idle", loginState.data);
-  //     console.log("payload", payload);
-  //   } else {
-  //     console.log("error", loginState.data);
-  //   }
-  // }, [loginState, payload]);
-
   return (
     <div className="login-form">
       <h2>Sign In</h2>
@@ -50,12 +32,12 @@ const LoginForm = ({ setSignedIn }) => {
       >
         <Form.Item
           name="email"
-          rules={[
-            {
-              required: true,
-              message: "Please input your Email!",
-            },
-          ]}
+          // rules={[
+          //   {
+          //     required: true,
+          //     message: "Please input your Email!",
+          //   },
+          // ]}
         >
           <Input
             prefix={<UserOutlined className="site-form-item-icon" />}
@@ -65,12 +47,12 @@ const LoginForm = ({ setSignedIn }) => {
         </Form.Item>
         <Form.Item
           name="password"
-          rules={[
-            {
-              required: true,
-              message: "Please input your Password!",
-            },
-          ]}
+          // rules={[
+          //   {
+          //     required: true,
+          //     message: "Please input your Password!",
+          //   },
+          // ]}
         >
           <Input
             prefix={<LockOutlined className="site-form-item-icon" />}
