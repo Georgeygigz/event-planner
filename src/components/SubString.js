@@ -1,20 +1,20 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Layout, Form, Select, Input, Button, Row, Col } from "antd";
+import React, { useState, useEffect, } from "react";
+import { Layout, Form, Select, Button, Row, Col } from "antd";
 import NavBar from "./NavBar";
 import SideBar from "./SideBar";
-import api from "../api";
+// import api from "../api";
 
 const SubString = () => {
   const [form] = Form.useForm();
   const [isDone, setIsDone] = useState(false);
-  const [words, setWords] = useState([
+  const [words,] = useState([
     "INFORMATION",
     "KITCHEN",
     "BACKGROUND",
     "ATMOSPHERE"
   ]);
   const [wordSolutions, setWordSolutions] = useState([]);
-  const [solutionObj, setSolutionObj] = useState({
+  const [solutionObj,] = useState({
     INFORMATION: [
       "IN",
       "FOR",
@@ -48,8 +48,6 @@ const SubString = () => {
   const [selectedWord, setSelectedWord] = useState([]);
   const [isSuccess, setIsSuccess] = useState(false);
   const [isFalse, setIsFalse] = useState(false);
-  const selectedLetterArray = useRef();
-  const [subString, setSubString] = useState("");
 
   useEffect(() => {
     let arrSplit = words[0].split("");
@@ -64,30 +62,30 @@ const SubString = () => {
     setQuestionNo(1);;
     setWordSolutions(solutionObj[words[0]])
     setTotalScore(solutionObj[words[0]].length)
-  }, []);
+  }, [words, solutionObj]);
 
-  const getWords = () => {
-    api
-      .get("/")
-      .then((res) => {
-        console.log("res >>>>", res.data);
-        setWords(res.data.words);
-      })
-      .catch((err) => {
-        console.log("res >>>>", err);
-      });
-  };
+  // const getWords = () => {
+  //   api
+  //     .get("/")
+  //     .then((res) => {
+  //       console.log("res >>>>", res.data);
+  //       setWords(res.data.words);
+  //     })
+  //     .catch((err) => {
+  //       console.log("res >>>>", err);
+  //     });
+  // };
 
-  const saveWord = (word) => {
-    api
-      .post("/saveword", { word: word })
-      .then((res) => {
-        console.log("res>>>>>>>>>>>>", res.data);
-      })
-      .catch((err) => {
-        console.log("res>>>>>>>>>>>>", err);
-      });
-  };
+  // const saveWord = (word) => {
+  //   api
+  //     .post("/saveword", { word: word })
+  //     .then((res) => {
+  //       console.log("res>>>>>>>>>>>>", res.data);
+  //     })
+  //     .catch((err) => {
+  //       console.log("res>>>>>>>>>>>>", err);
+  //     });
+  // };
 
   const handleNextWord = () => {
     setIsDone(false);
@@ -222,13 +220,13 @@ const SubString = () => {
     console.log(word.split(""));
   };
 
-  const addWords = () => {
-    const word = form.getFieldValue("word");
-    setWords((prevItems) => [...prevItems, word]);
+  // const addWords = () => {
+  //   const word = form.getFieldValue("word");
+  //   setWords((prevItems) => [...prevItems, word]);
 
-    saveWord(word);
-    form.resetFields();
-  };
+  //   saveWord(word);
+  //   form.resetFields();
+  // };
 
   let wordOptions = words.map((word, idx) => (
     <Select.Option key={idx} value={word}>
