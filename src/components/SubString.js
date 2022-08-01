@@ -305,7 +305,7 @@ const SubString = () => {
                       ? '': (completedQuestion.scoreWeight > 25 && completedQuestion.scoreWeight <= 100)
                       ? '#fff' :'',
                     minHeight: '20px',
-                    padding: '5px 6px',
+                    padding: completedQuestion.total >= 10?'7px 6px':'5px 6px',
                     fontWeight: 'bolder',
                     fontSize: completedQuestion.total >= 10? '1rem':'1.2rem',
                     borderRadius: '0 6px 6px 0' 
@@ -535,18 +535,13 @@ const SubString = () => {
          </Row>
           {isDone &&
             <Row justify="start" wrap>
-              <Col
-              xs={{ span: 24 }}
-              sm={{ span: 24 }}
-              md={{ span: 14, offset: 0 }}
-              style={{
-                display: "flex",
-                flexDirection: "row",
-              }}
-            >
                {wordSolutions &&
                 wordSolutions.map((char, idx) => (
-                  <div
+                  <Col
+                    xs={{ span: 4 }}
+                    sm={{ span: 4 }}
+                    md={{ span: 3, offset: 0 }}
+                    lg={{ span: 2, offset: 0 }}
                     key={idx}
                     style={{
                       backgroundColor: "cyan",
@@ -556,13 +551,15 @@ const SubString = () => {
                       padding: "0.8rem",
                       borderRadius: "6px",
                       cursor: "pointer",
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center'
                     }}
                     onClick={() => onCharClick(char, idx)}
                   >
                     {char}
-                  </div>
+                  </Col>
                 ))}
-              </Col>
             </Row>
           }
           <Row wrap>
