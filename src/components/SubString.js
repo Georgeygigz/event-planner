@@ -11,9 +11,15 @@ const SubString = () => {
     "INFORMATION",
     "KITCHEN",
     "BACKGROUND",
-    "ATMOSPHERE"
+    "ATMOSPHERE",
+    "BALLPLAYER",
+    "BANTAMWEIGHT",
+    "DRAGONFLY",
+    "BREADBASKET",
+    "XENOTRANSPLANTATION"
   ]);
   const [wordSolutions, setWordSolutions] = useState([]);
+  const [completedQuestions, setCompletedQuestions] = useState([]);
   const [solutionObj,] = useState({
     INFORMATION: [
       "IN",
@@ -40,6 +46,13 @@ const SubString = () => {
     DICTIONARY: [
       "DICTION","ION","ON"
     ],
+    XENOTRANSPLANTATION: [
+      'NO','TRANSPLANT','PLANT','ANT','RAN','NOT','LAN','AN','ION'
+    ],
+    BANTAMWEIGHT: ['BAN', 'WEIGH', 'WEIGHT', 'AN', 'EIGHT','AM'],
+    BALLPLAYER: ['BALL','ALL','PLAY','PLAYER', 'LAYER','LAY'],
+    BREADBASKET: ['BREAD','READ','BASK','ASK'],
+    DRAGONFLY: ['DRAGON', 'DRAG', 'FLY', 'RAG','AGO']
   });
   const [questionNo, setQuestionNo] = useState(0);
   const [totalScore, setTotalScore] = useState(0);
@@ -66,16 +79,20 @@ const SubString = () => {
 
   const handleNextWord = () => {
     setIsDone(false);
-    let arrayScores = localStorage.getItem('scores') || [];
+    let arrayScores = completedQuestions;
     let payload = {
-      question: questionNo,
-      score: selectedWord.length,
-      total: totalScore
+      questionNo: questionNo-1,
+      score: scoreList.length,
+      total: totalScore,
+      scoreWeight: (scoreList.length/totalScore)*100 
     }
+
     arrayScores = [
       ...arrayScores,
       payload
     ]
+    console.log('(totalScore/scoreList.length)*100', (scoreList.length/totalScore)*100 )
+    setCompletedQuestions(arrayScores)
     localStorage.setItem('scores', arrayScores)
     let arrSplit = words[questionNo].split("");
     arrSplit = arrSplit.map((char, idx) => {
@@ -223,19 +240,6 @@ const SubString = () => {
         name="word-selection"
       >
         <div className="substring-wrapper">
-          {/* <Form.Item
-            name="word"
-            label="Enter Word"
-            className="word-selection-form"
-            rules={[{ type: "string" }]}
-          >
-            <div className="words-input">
-              <Input />
-              <Button type="primary" htmlType="submit" onClick={addWords}>
-                Add
-              </Button>
-            </div>
-          </Form.Item> */}
           <Form.Item
             name="words"
             label="Select Word"
@@ -264,29 +268,95 @@ const SubString = () => {
             padding: "3rem 0 0 0",
           }}
         >
-          <Row justify="start" align="middle" wrap={true}>
+          {completedQuestions.length > 0 && <Row justify="start" wrap>
+              <h3>Score Tracker</h3>
+            </Row>}
+          <Row gutter={[4, 4]} wrap>
+            {
+              completedQuestions && completedQuestions.map((completedQuestion, idx) => (
+                <Col
+                  xs={{ span: 6, offset: 0 }}
+                  sm={{ span: 4, offset: 0 }}
+                  md={{ span: 3, offset: 0 }}
+                  lg={{ span: 3, offset: 0 }}
+                  key={idx}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'start',
+                    alignItems: 'start',
+                    margin: '2px 5px'
+                  }}
+                >
+                  <div style={{
+                    backgroundColor: '#4b3842',
+                    minHeight: '20px',
+                    padding: '10px 3px',
+                    borderRadius: '6px 0 0 6px',
+                    color: '#9192a2',
+                    fontSize: '.8rem'
+                  }}>Word {completedQuestion.questionNo+1}</div>
+                  <div style={{
+                    backgroundColor: completedQuestion.scoreWeight <= 25
+                      ? '#dbc9ab': (completedQuestion.scoreWeight > 25 && completedQuestion.scoreWeight <= 75)
+                      ? '#8c9d75' : (completedQuestion.scoreWeight > 75 && completedQuestion.scoreWeight < 100)
+                      ? '#37492d' : 'green',
+                      color: completedQuestion.scoreWeight <= 25
+                      ? '': (completedQuestion.scoreWeight > 25 && completedQuestion.scoreWeight <= 100)
+                      ? '#fff' :'',
+                    minHeight: '20px',
+                    padding: '5px 6px',
+                    fontWeight: 'bolder',
+                    fontSize: '1.2rem',
+                    borderRadius: '0 6px 6px 0' 
+                  }}>{completedQuestion.score} /{completedQuestion.total}</div>
+                </Col>
+              ))
+            }
+          </Row>
+          <Row style={{
+            margin: '2rem 5px 0'
+          }} justify="start" wrap>
+            <h3>Word Builder</h3>
+          </Row>
+          <Row justify="start" align="start" wrap={true}>
             <Col
-              xs={{ span: 6, offset: 0 }}
+              xs={{ span: 24, offset: 0 }}
               sm={{ span: 6, offset: 0 }}
               style={{
-                display: "flex",
-                flexDirection: 'column',
-                alignItems: 'start',
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'start',
+                alignItems: 'center',
               }}
             >
-              <h2>Q {questionNo}</h2>
-              <h3>Score: {scoreList.length} /{totalScore}</h3>
+              <div style={{
+                backgroundColor: 'lightblue',
+                minHeight: '20px',
+                padding: '6px 6px',
+                borderRadius: '6px 0 0 6px',
+                color: '#000',
+                fontSize: '0.9rem'
+              }}>Word {questionNo}</div>
+              <div style={{
+                minHeight: '20px',
+                padding: '5px 8px',
+                backgroundColor: 'black',
+                fontSize: '1rem',
+                color: '#fff',
+                borderRadius: '0 6px 6px 0' 
+              }}>{scoreList.length} /{totalScore}</div>
             </Col>
             <Col
-              xs={{ span: 18 }}
+              xs={{ span: 24 }}
               sm={{ span: 18 }}
               md={{ span: 12, offset: 0 }}
             >
               <Row justify="start">
-              {(selectedWord || !isDone) &&
+              {(selectedWord && !isDone) &&
               selectedWord.map((char, idx) => (
                 <Col
-                  xs={{ span: 2 }}
+                  xs={{ span: 1 }}
                   sm={{ span: 1 }}
                   md={{ span: 1, offset: 0 }}
                   key={idx}
@@ -389,7 +459,7 @@ const SubString = () => {
                 alignItems: "center",
               }}
             >
-              {selectedWord.length > 0 && (
+              {(selectedWord.length > 0 && !isDone) && (
                 <Button
                   type="primary"
                   size="large"
@@ -410,7 +480,7 @@ const SubString = () => {
                 margin: '0 .5rem'
               }}
             >
-              {selectedWord.length > 0 && (
+              {(selectedWord.length > 0 && !isDone) && (
                 <Button
                   block
                   size="large"
@@ -429,37 +499,34 @@ const SubString = () => {
             fontWeight: 500
           }}>SUBMITTED WORDS</span>}
          </Row>
-          <Row justify="start" wrap={true}>
-            <Col
-              xs={{ span: 24 }}
-              sm={{ span: 24 }}
-              md={{ span: 14, offset: 0 }}
-              style={{
-                display: "flex",
-                flexDirection: "row",
-              }}
-            >
-              {scoreList &&
-                scoreList.map((char, idx) => (
-                  <div
-                    key={idx}
-                    style={{
-                      backgroundColor: "#45cb85",
-                      color: "white",
-                      fontWeight: 'bolder',
-                      margin: "1rem .1rem",
-                      padding: "0.8rem",
-                      borderRadius: "6px",
-                      cursor: "pointer",
-                    }}
-                    onClick={() => onCharClick(char, idx)}
-                  >
-                    {char.char}
-                  </div>
-                ))}
-            </Col> 
+          <Row justify="start" wrap>
+            {scoreList &&
+              scoreList.map((char, idx) => (
+                <Col
+                  xs={{ span: 4 }}
+                  sm={{ span: 4 }}
+                  md={{ span: 3, offset: 0 }}
+                  lg={{ span: 2, offset: 0 }}
+                  key={idx}
+                  style={{
+                    backgroundColor: "#45cb85",
+                    color: "white",
+                    fontWeight: 'bolder',
+                    margin: "1rem .1rem",
+                    padding: "0.8rem",
+                    borderRadius: "6px",
+                    cursor: "pointer",
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}
+                  onClick={() => onCharClick(char, idx)}
+                >
+                  {char.char}
+                </Col>
+              ))}
           </Row>
-         <Row>
+         <Row wrap>
          {(isDone && wordSolutions.length > 0) && <span className="" style={{
             fontSize: '0.8rem',
             fontWeight: 500,
@@ -467,9 +534,8 @@ const SubString = () => {
           }}>REMAINING WORDS</span>}
          </Row>
           {isDone &&
-            <Row justify="start" wrap={true}>
-              
-            <Col
+            <Row justify="start" wrap>
+              <Col
               xs={{ span: 24 }}
               sm={{ span: 24 }}
               md={{ span: 14, offset: 0 }}
@@ -496,10 +562,11 @@ const SubString = () => {
                     {char}
                   </div>
                 ))}
-              </Col></Row>
+              </Col>
+            </Row>
           }
-          <Row>
-          <Col
+          <Row wrap>
+            <Col
                xs={{ span: 6 }}
                md={{ span: 3 }}
                style={{
