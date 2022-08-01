@@ -276,7 +276,7 @@ const SubString = () => {
               completedQuestions && completedQuestions.map((completedQuestion, idx) => (
                 <Col
                   xs={{ span: 6, offset: 0 }}
-                  sm={{ span: 6, offset: 0 }}
+                  sm={{ span: 4, offset: 0 }}
                   md={{ span: 3, offset: 0 }}
                   lg={{ span: 3, offset: 0 }}
                   key={idx}
@@ -307,7 +307,7 @@ const SubString = () => {
                     minHeight: '20px',
                     padding: '5px 6px',
                     fontWeight: 'bolder',
-                    fontSize: '1.2rem',
+                    fontSize: completedQuestion.total >= 10? '1rem':'1.2rem',
                     borderRadius: '0 6px 6px 0' 
                   }}>{completedQuestion.score} /{completedQuestion.total}</div>
                 </Col>
