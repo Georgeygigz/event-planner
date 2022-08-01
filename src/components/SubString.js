@@ -64,33 +64,9 @@ const SubString = () => {
     setTotalScore(solutionObj[words[0]].length)
   }, [words, solutionObj]);
 
-  // const getWords = () => {
-  //   api
-  //     .get("/")
-  //     .then((res) => {
-  //       console.log("res >>>>", res.data);
-  //       setWords(res.data.words);
-  //     })
-  //     .catch((err) => {
-  //       console.log("res >>>>", err);
-  //     });
-  // };
-
-  // const saveWord = (word) => {
-  //   api
-  //     .post("/saveword", { word: word })
-  //     .then((res) => {
-  //       console.log("res>>>>>>>>>>>>", res.data);
-  //     })
-  //     .catch((err) => {
-  //       console.log("res>>>>>>>>>>>>", err);
-  //     });
-  // };
-
   const handleNextWord = () => {
     setIsDone(false);
     let arrayScores = localStorage.getItem('scores') || [];
-    console.log('arrayScores', arrayScores)
     let payload = {
       question: questionNo,
       score: selectedWord.length,
@@ -145,7 +121,6 @@ const SubString = () => {
       });
       selectedArr = newArr;
     }
-
     if (
       (idx === selectedArr[0]?.id - 1 ||
         idx === selectedArr[selectedArr.length - 1]?.id + 1 ||
