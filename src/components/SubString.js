@@ -276,7 +276,7 @@ const SubString = () => {
               completedQuestions && completedQuestions.map((completedQuestion, idx) => (
                 <Col
                   xs={{ span: 6, offset: 0 }}
-                  sm={{ span: 4, offset: 0 }}
+                  sm={{ span: 6, offset: 0 }}
                   md={{ span: 3, offset: 0 }}
                   lg={{ span: 3, offset: 0 }}
                   key={idx}
